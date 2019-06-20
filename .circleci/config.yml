@@ -5,14 +5,13 @@ orbs:
   aws-s3: circleci/aws-s3@1.0.11
 jobs:
   sh-s3-upload:
-    build:
-      docker:
-        - image: 'circleci/python:2.7'
-      steps:
-        - checkout
-        - aws-s3/copy:
-            from: ./project/fetch-and-run/myjob.sh
-            to: 's3://circleci-fetch-test99/myjob.sh'
+    docker:
+      - image: 'circleci/python:2.7'
+    steps:
+      - checkout
+      - aws-s3/copy:
+          from: ./project/fetch-and-run/myjob.sh
+          to: 's3://circleci-fetch-test99/myjob.sh'
 workflows:
   build-and-deploy:
     jobs:
