@@ -10,7 +10,7 @@ jobs:
     steps:
       - checkout
       - aws-s3/copy:
-          from: ./project/fetch-and-run/myjob.sh
+          from: ./project/myjob.sh
           to: 's3://circleci-fetch-test99/myjob.sh'
 workflows:
   build-and-deploy:
