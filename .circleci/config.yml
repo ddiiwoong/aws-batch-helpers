@@ -19,7 +19,7 @@ workflows:
           repo: $AWS_RESOURCE_NAME_PREFIX
           tag: ${CIRCLE_SHA1}
           # create-repo: true
-          dockerfile: Dockerfile
+          # dockerfile: Dockerfile
           path: ./project/fetch-and-run
       - sh-s3-upload:
           name: sh-s3-upload
