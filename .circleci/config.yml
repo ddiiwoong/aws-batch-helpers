@@ -20,7 +20,7 @@ workflows:
           tag: ${CIRCLE_SHA1}
           # create-repo: true
           # dockerfile: Dockerfile
-          path: ./project/fetch-and-run
+          path: ./fetch-and-run
       - sh-s3-upload:
           name: sh-s3-upload
           requires:
