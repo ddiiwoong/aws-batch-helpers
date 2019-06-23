@@ -21,7 +21,7 @@ jobs:
       - run:
           name: Update AWS Batch Job
           command: |
-            aws batch register-job-definition --job-definition-name data_crawler --type container --container-properties '{ "image": "823928750534.dkr.ecr.ap-northeast-2.amazonaws.com/fetch_and_run:v20190623", "vcpus": 1, "memory": 512}'
+            aws batch register-job-definition --job-definition-name fetch_and_run --type container --container-properties '{ "image": "823928750534.dkr.ecr.ap-northeast-2.amazonaws.com/fetch_and_run:v20190623", "vcpus": 1, "memory": 512}'
             # echo $AWS_ECR_ACCOUNT_URL/$AWS_RESOURCE_NAME_PREFIX:${CIRCLE_SHA1}
 workflows:
   build-and-deploy:
