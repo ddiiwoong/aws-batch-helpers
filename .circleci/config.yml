@@ -3,6 +3,7 @@ orbs:
   aws-ecr: circleci/aws-ecr@6.1.0
   aws-ecs: circleci/aws-ecs@0.0.8
   aws-s3: circleci/aws-s3@1.0.11
+  aws-cli: circleci/aws-cli@0.1.13
 jobs:
   sh-s3-upload:
     docker:
@@ -11,19 +12,33 @@ jobs:
       - checkout
       - aws-s3/copy:
           from: ./myjob.sh
-          to: 's3://circleci-fetch-test99/myjob.sh'
+          to: 's3://batch-ecr-test/myjob.sh'
+  deploy-batch:
+    executor: aws-cli/default
+    steps:
+      - checkout
+      - aws-cli/install
+      - run:
+          name: Update AWS Batch Job
+          command: |
+            aws batch register-job-definition --job-definition-name data_crawler --type container --container-properties '{ "image": "823928750534.dkr.ecr.ap-northeast-2.amazonaws.com/fetch_and_run:v20190623", "vcpus": 1, "memory": 512}'
+            # echo $AWS_ECR_ACCOUNT_URL/$AWS_RESOURCE_NAME_PREFIX:${CIRCLE_SHA1}
 workflows:
   build-and-deploy:
     jobs:
       - aws-ecr/build-and-push-image:
-          repo: $AWS_RESOURCE_NAME_PREFIX
-          tag: ${CIRCLE_SHA1}
+          repo: $AWS_RESOURCE_NAME_PREFIX # data-crawler-test
+          tag: v20190623
           # create-repo: true
           # dockerfile: Dockerfile
       - sh-s3-upload:
           name: sh-s3-upload
           requires:
             - aws-ecr/build-and-push-image
+      - deploy-batch:
+          name: deploy-batch
+          requires:
+            - sh-s3-upload
       # - aws-ecs/deploy-service-update:
       #     requires:
       #       - sh-s3-upload
