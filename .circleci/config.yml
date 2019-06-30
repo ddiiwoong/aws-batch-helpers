@@ -9,14 +9,14 @@ jobs:
     docker:
       - image: 'circleci/python:2.7'
     steps:
-      # - checkout
+      - checkout
       - aws-s3/copy:
           from: ./myjob.sh
           to: 's3://batch-ecr-test/myjob.sh'
   deploy-batch:
     executor: aws-cli/default
     steps:
-      # - checkout
+      # checkout
       - aws-cli/install
       - run:
           name: Update AWS Batch Job
